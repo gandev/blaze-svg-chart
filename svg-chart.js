@@ -1,41 +1,42 @@
 TimeSeries = new Meteor.Collection('timeseries');
 
 if (Meteor.isClient) {
+    var Y_ZERO = 150; //px
+
     var last_time = -1;
     var last_x = 0;
     var last_y = 0;
 
-    var Y_ZERO = 150; //px
-
     UI.body.helpers({
-        series: function() {
+        series_items: function() {
             return TimeSeries.find();
         },
         first_series_item: function() {
-            var current_time = this.event_time.getTime();
-            if (last_time === -1) {
-                last_time = current_time;
+            var series_item = this;
+            if (last_time === -1 && this.event_time) {
+                last_time = this.event_time.getTime();
                 return true;
             }
         },
         connection: function() {
-            var seriesItem = this;
-            var current_time = seriesItem.event_time.getTime();
+            var series_item = this;
+            var current_time = series_item.event_time.getTime();
 
             var new_x = last_x + (current_time - last_time);
+            var new_y = Y_ZERO - series_item.value;
 
-            var attribute_values = {
+            var coordinates = {
                 x1: last_x,
-                y1: Y_ZERO - last_y,
+                y1: last_y,
                 x2: new_x,
-                y2: Y_ZERO - seriesItem.value
+                y2: new_y
             };
 
             last_time = current_time;
-            last_y = seriesItem.value;
+            last_y = new_y;
             last_x = new_x;
 
-            return attribute_values;
+            return coordinates;
         }
     });
 }
@@ -51,9 +52,8 @@ if (Meteor.isServer) {
             });
         };
 
-
-        for (var i = 0; i < 20; i++) {
-            Meteor.setTimeout(addSeriesItem, i * 30);
+        for (var i = 0; i < 30; i++) {
+            Meteor.setTimeout(addSeriesItem, i * 20);
         }
     });
 }

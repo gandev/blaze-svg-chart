@@ -1,1 +1,9 @@
-/* CSS declarations go here */
+.baseline {
+  stroke-width: 1px;
+  stroke: black;
+}
+
+.connection-line {
+  stroke-width: 1px;
+  stroke: green;
+}

@@ -6,11 +6,11 @@
   <svg xmlns="http://www.w3.org/2000/svg"
        width="600" height="200">
 
-    <line x1="0" x2="600" y1="150" y2="150" style="stroke-width: 1px; stroke: black;" />
+    <line class="baseline" x1="0" x2="600" y1="150" y2="150" />
 
-    {{#each series}}
+    {{#each series_items}}
       {{#unless first_series_item}}
-        <line {{connection}} style="stroke-width: 1px; stroke: green;" />
+        <line class="connection-line" {{connection}} />
       {{/unless}}
     {{/each}}
   </svg>
